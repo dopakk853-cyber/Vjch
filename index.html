@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Вячеславченск</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://googleapis.com" rel="stylesheet">
+<style>
+:root { --insane: cubic-bezier(0.18, 2.75, 0.32, 0.82); }
+* { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; border: none !important; outline: none !important; -webkit-text-stroke: 0 !important; }
+html, body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 14px;
+  background: linear-gradient(145deg, #050817 0%, #0d0824 38%, #180933 72%, #070d26 100%) !important;
+  background-size: 250% 250% !important;
+  animation: bgFlow 14s ease infinite;
+  color: #94a3b8;
+  font-family: 'Chakra Petch', 'Arial Black', Impact, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: -30%;
+  background: radial-gradient(circle at 80% 15%, rgba(99, 102, 241, 0.22), transparent 45%), radial-gradient(circle at 20% 85%, rgba(139, 92, 246, 0.22), transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+@keyframes bgFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes textFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes slamBounce { 0% { opacity: 0; transform: translateX(-35px) translateY(35px) scale(0.55, 1.35) rotate(-4deg); } 40% { opacity: 1; transform: translateX(8px) translateY(-16px) scale(1.14, 0.84) rotate(2deg); } 68% { transform: translateX(-4px) translateY(8px) scale(0.93, 1.07) rotate(-1deg); } 86% { transform: translateX(2px) translateY(-3px) scale(1.03, 0.97) rotate(0deg); } 100% { opacity: 1; transform: translate(0, 0) scale(1, 1) rotate(0deg); } }
+@keyframes bassDrop { 0% { transform: scale(1) translateY(0); } 30% { transform: scale(1.035, 0.96) translateY(3px); } 65% { transform: scale(0.985, 1.02) translateY(-3px); } 100% { transform: scale(1) translateY(0); } }
+@keyframes strobe { 0% { background: linear-gradient(135deg, rgba(14, 18, 46, 0.88), rgba(28, 12, 58, 0.88)); } 100% { background: linear-gradient(135deg, rgba(25, 32, 78, 0.94), rgba(52, 18, 98, 0.94)); } }
+input { display: none; }
+.app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 12px; }
+.header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(13, 17, 43, 0.86), rgba(26, 12, 54, 0.86));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 14px;
+  padding: 14px 18px 18px;
+  box-shadow: 0 18px 45px rgba(2, 4, 15, 0.85);
+  transition: transform 0.75s var(--insane);
+}
+.header:active { transform: scale(1.22, 0.72) translateY(10px) rotate(-1.5deg); transition-duration: 0.06s; }
+.pic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.user-pic { width: 100%; height: 145px; object-fit: cover; border-radius: 8px; background: #0c091a; transition: transform 0.75s var(--insane); }
+.user-pic:active { transform: scale(1.25, 0.7) rotate(-4deg); transition-duration: 0.05s; }
+.meta { display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #60a5fa; text-shadow: 0 0 10px rgba(96, 165, 250, 0.45); margin-bottom: 4px; }
+.title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: linear-gradient(120deg, #2563eb, #4f46e5, #7e22ce, #3b82f6);
+  background-size: 250% 250%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 10px rgba(129, 140, 248, 0.45));
+  animation: textFlow 5s ease infinite;
+}
+.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: linear-gradient(90deg, rgba(13, 17, 43, 0.85), rgba(26, 12, 54, 0.85)); padding: 6px; border-radius: 12px; }
+.btn { background: transparent; border-radius: 8px; padding: 11px 2px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; text-align: center; cursor: pointer; transition: transform 0.75s var(--insane), background 0.2s; }
+.btn:active { transform: scale(1.38, 0.58) translateY(8px); transition-duration: 0.05s; }
+.btn span {
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 6px rgba(147, 197, 253, 0.35));
+}
+#t1:checked ~ .app label[for="t1"], #t2:checked ~ .app label[for="t2"], #t3:checked ~ .app label[for="t3"], #t4:checked ~ .app label[for="t4"] { background: linear-gradient(135deg, #172554, #3b0764); transform: scale(1.08) translateY(-3px); }
+#t1:checked ~ .app label[for="t1"] span, #t2:checked ~ .app label[for="t2"] span, #t3:checked ~ .app label[for="t3"] span, #t4:checked ~ .app label[for="t4"] span {
+  background: linear-gradient(90deg, #60a5fa, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(196, 181, 253, 0.55));
+}
+.page { display: none; flex-direction: column; gap: 10px; }
+#t1:checked ~ .app #p1, #t2:checked ~ .app #p2, #t3:checked ~ .app #p3, #t4:checked ~ .app #p4 { display: flex; }
+.card {
+  background: linear-gradient(145deg, rgba(13, 17, 43, 0.85), rgba(26, 12, 54, 0.85));
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: 0 10px 28px rgba(2, 4, 15, 0.75);
+  animation: slamBounce 0.75s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  transition: transform 0.75s var(--insane);
+}
+.card:nth-child(2) { animation-delay: 0.06s; } .card:nth-child(3) { animation-delay: 0.12s; } .card:nth-child(4) { animation-delay: 0.18s; }
+.card:active { transform: scale(1.18, 0.76) rotate(-2deg); transition-duration: 0.05s; }
+.num { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #6366f1; text-shadow: 0 0 8px rgba(129, 140, 248, 0.4); margin-bottom: 4px; display: block; }
+.card h3 {
+  margin: 0 0 6px 0;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #2563eb, #6d28d9, #7e22ce);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(147, 197, 253, 0.4));
+  animation: textFlow 6s ease infinite;
+}
+.card p { margin: 0; font-size: 13px; line-height: 1.45; color: #94a3b8; text-shadow: 0 1px 6px rgba(148, 163, 184, 0.25); font-family: system-ui, sans-serif; }
+.ctrl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.turbo { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 13px 14px; border-radius: 12px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; background: linear-gradient(90deg, #131b42, #2c0e59); animation: slamBounce 0.6s ease; transition: transform 0.75s var(--insane); }
+.turbo:active { transform: scale(1.3, 0.65) translateY(7px); transition-duration: 0.05s; }
+.turbo span {
+  background: linear-gradient(90deg, #3b82f6, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 7px rgba(165, 180, 252, 0.45));
+}
+.dot { width: 8px; height: 8px; border-radius: 2px; background: #4f46e5; transition: transform 0.5s var(--insane); }
+#tb:checked ~ .app .dot-s { background: #a855f7; transform: scale(1.6) rotate(45deg); }
+#tb:checked ~ .app .card { animation: strobe 0.4s infinite alternate; }
+#bass:checked ~ .app .dot-b { background: #3b82f6; transform: scale(1.6) rotate(45deg); }
+#bass:checked ~ .app .header, #bass:checked ~ .app .card { animation: bassDrop 0.48s infinite; }
+.extra { display: none; margin-top: 10px; padding-top: 10px; font-size: 12px; color: #60a5fa; text-shadow: 0 0 10px rgba(96, 165, 250, 0.45); font-weight: 700; letter-spacing: 0.5px; }
+#ex1:checked ~ .app .ex1, #ex2:checked ~ .app .ex2 { display: block; animation: slamBounce 0.5s ease; }
+.more-btn { display: inline-block; margin-top: 10px; padding: 6px 10px; border-radius: 8px; background: linear-gradient(90deg, #161f4d, #311063); font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: transform 0.7s var(--insane); }
+.more-btn:active { transform: scale(1.35, 0.65); transition-duration: 0.05s; }
+.more-btn span {
+  background: linear-gradient(90deg, #60a5fa, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 6px rgba(196, 181, 253, 0.4));
+}
+.wrap { display: flex; flex-wrap: wrap; gap: 7px; padding-bottom: 40px; animation: slamBounce 0.6s ease; }
+.badge { background: linear-gradient(135deg, rgba(14, 19, 48, 0.9), rgba(29, 13, 61, 0.9)); border-radius: 8px; padding: 8px 12px; cursor: pointer; transition: transform 0.8s var(--insane); }
+.badge:active { transform: scale(1.7, 0.55) rotate(-10deg) translateY(-12px); transition-duration: 0.05s; }
+.badge span {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #2563eb, #6d28d9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 7px rgba(147, 197, 253, 0.4));
+}
+.badge:nth-child(even) span {
+  background: linear-gradient(90deg, #7e22ce, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 7px rgba(196, 181, 253, 0.4));
+}
+.badge:nth-child(even):active { transform: scale(1.7, 0.55) rotate(10deg) translateY(-12px); }
+.badge.cap { background: linear-gradient(135deg, #172554, #3b0764); }
+</style>
+</head>
+<body>
+<input type="radio" name="t" id="t1" checked><input type="radio" name="t" id="t2"><input type="radio" name="t" id="t3"><input type="radio" name="t" id="t4">
+<input type="checkbox" id="tb"><input type="checkbox" id="bass"><input type="checkbox" id="ex1"><input type="checkbox" id="ex2">
+<div class="app">
+  <div class="header">
+    <div class="pic-grid">
+      <img class="user-pic" src="https://ibb.co" alt="">
+      <img class="user-pic" src="https://ibb.co" alt="">
+    </div>
+    <div class="meta"><span>МАРИДАНИЯ // 01</span><span>NIGHTCLUB EDITION</span></div>
+    <h1 class="title">Вячеславченск</h1>
+  </div>
+  <div class="tabs">
+    <label for="t1" class="btn"><span>Факты</span></label>
+    <label for="t2" class="btn"><span>Районы</span></label>
+    <label for="t3" class="btn"><span>Спорт</span></label>
+    <label for="t4" class="btn"><span>Область</span></label>
+  </div>
+  <div id="p1" class="page">
+    <div class="ctrl-row">
+      <label for="tb" class="turbo"><span>Стробоскоп</span><div class="dot dot-s"></div></label>
+      <label for="bass" class="turbo"><span>Басс-кач</span><div class="dot dot-b"></div></label>
+    </div>
+    <div class="card">
+      <span class="num">01 / ТРАНСПОРТ</span>
+      <h3>Магистрали в 9 полос</h3>
+      <p>Широчайшие проспекты на 9 полос с выделенными линиями и реверсивным движением.</p>
+      <label for="ex1" class="more-btn"><span>+ Сводка трафика</span></label>
+      <div class="extra ex1">СТАТУС: 9/9 ПОЛОС АКТИВНЫ // РЕВЕРС: НОЧНОЙ РЕЖИМ</div>
+    </div>
+    <div class="card"><span class="num">02 / МЕТРОПОЛИТЕН</span><h3>Подземные станции</h3><p>Скоростные трамваи, троллейбусы и автобусы с подземными остановками.</p></div>
+    <div class="card"><span class="num">03 / СТОЛИЦА</span><h3>Главный город области</h3><p>Вячеславченск объединяет десятки городов, ПГТ и станиц всей Маридании.</p></div>
+  </div>
+  <div id="p2" class="page">
+    <div class="card"><span class="num">СЕКТОР А</span><h3>Краматорский район</h3><p>Огромный городской сектор, насчитывающий целых 90 улиц.</p></div>
+    <div class="card"><span class="num">СЕКТОР Б</span><h3>Тулежаловский район</h3><p>Один из ключевых районов столицы со своей уникальной сеткой улиц.</p></div>
+    <div class="card"><span class="num">СЕКТОР В</span><h3>Маленький Чимриковый район</h3><p>Компактный и запоминающийся район на карте Вячеславченска.</p></div>
+  </div>
+  <div id="p3" class="page">
+    <div class="card">
+      <span class="num">ЛИГА БОГОВ // ТОП-1</span>
+      <h3>ФК «Вячеславченск»</h3>
+      <p>Легендарный футбольный клуб столицы, признанный лучшим в лиге.</p>
+      <label for="ex2" class="more-btn"><span>+ Архив клуба</span></label>
+      <div class="extra ex2">СЕЗОНОВ В ТОП-1: 98 // СРЕДНИЙ СЧЁТ: 15.7 ГОЛОВ ЗА СЕЗОН</div>
+    </div>
+    <div class="card"><span class="num">СТАТИСТИКА ЗА 98 ЛЕТ</span><h3>1 545 забитых голов</h3><p>Абсолютный рекорд результативности клуба в ворота соперников за всю историю.</p></div>
+  </div>
+  <div id="p4" class="page">
+    <div class="wrap">
+      <div class="badge cap"><span>Вячеславченск</span></div><div class="badge"><span>цилиндровск</span></div><div class="badge"><span>Резиторск</span></div><div class="badge"><span>Протарадск</span></div><div class="badge"><span>Кириновка</span></div><div class="badge"><span>Лобнянск</span></div><div class="badge"><span>Крикровополь</span></div><div class="badge"><span>Тцополинка</span></div><div class="badge"><span>Тивкибурксполь</span></div><div class="badge"><span>Сливка-бурка</span></div><div class="badge"><span>Нигриволия</span></div><div class="badge"><span>Сжигозаводск</span></div><div class="badge"><span>Третьивинтовполь</span></div><div class="badge"><span>Криковин</span></div><div class="badge"><span>Роцислав</span></div><div class="badge"><span>Волск</span></div><div class="badge"><span>Маяковский</span></div><div class="badge"><span>Маяковского</span></div><div class="badge"><span>Маяковск</span></div><div class="badge"><span>Размаяковский</span></div><div class="badge"><span>Размаяковского</span></div><div class="badge"><span>Размаяковск</span></div><div class="badge"><span>Гортвейнер</span></div><div class="badge"><span>Цолифрон</span></div><div class="badge"><span>Криколь</span></div><div class="badge"><span>Такси</span></div><div class="badge"><span>Всровска</span></div><div class="badge"><span>Лклклк</span></div><div class="badge"><span>Вквквк</span></div><div class="badge"><span>Волчановск на цибуливке</span></div><div class="badge"><span>Кологривск</span></div><div class="badge"><span>Вахитмовск</span></div><div class="badge"><span>Колодырск</span></div><div class="badge"><span>РСФСРСК</span></div><div class="badge"><span>Венгерск</span></div><div class="badge"><span>Секстельколополь</span></div><div class="badge"><span>Санетовск</span></div><div class="badge"><span>Вицовка</span></div><div class="badge"><span>Колограновка</span></div><div class="badge"><span>Космочи</span></div><div class="badge"><span>Стульчанск</span></div><div class="badge"><span>Рикрикск</span></div><div class="badge"><span>Типов</span></div><div class="badge"><span>Торино</span></div><div class="badge"><span>Ллерово</span></div><div class="badge"><span>Алдинск</span></div><div class="badge"><span>Инжирош</span></div><div class="badge"><span>Цабуливовск</span></div><div class="badge"><span>Желтград</span></div><div class="badge"><span>Сидивоп</span></div><div class="badge"><span>Крикуц</span></div><div class="badge"><span>СтанКаз</span></div><div class="badge"><span>Шиповел</span></div><div class="badge"><span>Рипол</span></div><div class="badge"><span>Криков</span></div><div class="badge"><span>Тциполь</span></div><div class="badge"><span>Килиндровка</span></div>
+    </div>
+  </div>
+</div>
+</body>
+  </html>
+  
